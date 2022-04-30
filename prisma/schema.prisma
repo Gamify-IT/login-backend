@@ -1,7 +1,6 @@
-datasource db {
-    // could be postgresql or mysql
-    provider = "sqlite"
-    url      = "file:dev.db"
+datasource postgresql {
+  provider  = "postgresql"
+  url       = env("POSTGRESQL_URL")
 }
 
 generator db {

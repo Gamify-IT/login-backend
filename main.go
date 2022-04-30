@@ -5,7 +5,7 @@ package main
 //go:generate go run github.com/go-swagger/go-swagger/cmd/swagger generate server --target ./src/gen --name Login --spec ./swagger/swagger.yml --principal interface{} --exclude-main
 
 import (
-	restapi2 "github.com/Gamify-IT/login-backend/src/gen/restapi"
+	"github.com/Gamify-IT/login-backend/src/gen/restapi"
 	"github.com/Gamify-IT/login-backend/src/gen/restapi/operations"
 	"log"
 	"os"
@@ -16,13 +16,13 @@ import (
 
 func main() {
 
-	swaggerSpec, err := loads.Embedded(restapi2.SwaggerJSON, restapi2.FlatSwaggerJSON)
+	swaggerSpec, err := loads.Embedded(restapi.SwaggerJSON, restapi.FlatSwaggerJSON)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
 	api := operations.NewLoginAPI(swaggerSpec)
-	server := restapi2.NewServer(api)
+	server := restapi.NewServer(api)
 	defer server.Shutdown()
 
 	parser := flags.NewParser(server, flags.Default)

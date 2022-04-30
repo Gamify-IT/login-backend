@@ -9,21 +9,20 @@ Make sure you have the following installed:
 - Go: https://go.dev
 - GoLand: https://www.jetbrains.com/go/
 
-> When you open the project with GoLand, it should prompt you to install the required plugins.
+> When you open the project with GoLand, it should prompt you to **install the required plugins**.
 
-You need to generate a few files, before you can start coding or compile the project.
+This repository contains **run configurations** which are loaded automatically when you open
+the project in GoLand. To run the project, select the `go build` configuration in the top right
+toolbar.
 
-```bash
-go generate
-```
+The `go build` configuration performs the following tasks for you:
 
-You should now be able to compile and run the server.
+- starts a postgres database with docker
+- generates the Swagger code for the server
+- generates the Prisma database client
+- compiles & runs the project
 
-```bash
-go run .
-```
-
-### Project setup
+### Project structure
 
 | File / Directory                     | Description                                                                               |
 |--------------------------------------|-------------------------------------------------------------------------------------------|

@@ -1,0 +1,19 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="go build" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="login-server" />
+    <working_directory value="$PROJECT_DIR$" />
+    <useCustomBuildTags value="true" />
+    <envs>
+      <env name="POSTGRES_PASSWORD" value="password" />
+      <env name="POSTGRES_URL" value="postgresql://postgres:password@localhost:5432/postgres" />
+    </envs>
+    <kind value="PACKAGE" />
+    <package value="github.com/Gamify-IT/login-backend" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/cmd/login-backend-server/main.go" />
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="run database" run_configuration_type="docker-deploy" />
+      <option name="GoBeforeRunTask" command="generate" />
+    </method>
+  </configuration>
+</component>

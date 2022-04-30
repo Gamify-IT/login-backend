@@ -1,9 +1,13 @@
-# Swagger Generated files
+# Swagger generated files
 /src/gen/models
 /src/gen/restapi/operations
 /src/gen/restapi/doc.go
 /src/gen/restapi/embedded_spec.go
 /src/gen/restapi/server.go
+
+# Prisma generated files
+/src/gen/db/.gitignore
+/src/gen/db/*_gen.go
 
 # IntelliJ / GoLand
 /.idea/.gitignore

@@ -1,5 +1,9 @@
 package main
 
+//go:generate mkdir -p src/gen/db
+//go:generate go run github.com/prisma/prisma-client-go generate
+//go:generate go run github.com/go-swagger/go-swagger/cmd/swagger generate server --target ./src/gen --name Login --spec ./swagger/swagger.yml --principal interface{} --exclude-main
+
 import (
 	restapi2 "github.com/Gamify-IT/login-backend/src/gen/restapi"
 	"github.com/Gamify-IT/login-backend/src/gen/restapi/operations"
@@ -9,9 +13,6 @@ import (
 	"github.com/go-openapi/loads"
 	flags "github.com/jessevdk/go-flags"
 )
-
-//go:generate mkdir -p gen/
-//go:generate go run github.com/go-swagger/go-swagger/cmd/swagger generate server --target ./gen --name Login --spec ./swagger/swagger.yml --principal interface{} --exclude-main
 
 func main() {
 

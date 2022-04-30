@@ -4,6 +4,8 @@ package restapi
 
 import (
 	"crypto/tls"
+	"fmt"
+	"github.com/Gamify-IT/login-backend/src/gen/db"
 	"github.com/Gamify-IT/login-backend/src/gen/restapi/operations"
 	"github.com/Gamify-IT/login-backend/src/handlers"
 	"net/http"
@@ -34,9 +36,18 @@ func configureAPI(api *operations.LoginAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	handlers.ConfigureAPI(api)
+	client := db.NewClient()
+	if err := client.Prisma.Connect(); err != nil {
+		panic(fmt.Errorf("database connection: %e", err))
+	}
 
-	api.PreServerShutdown = func() {}
+	handlers.ConfigureAPI(api, client)
+
+	api.PreServerShutdown = func() {
+		if err := client.Prisma.Disconnect(); err != nil {
+			panic(err)
+		}
+	}
 
 	api.ServerShutdown = func() {}
 

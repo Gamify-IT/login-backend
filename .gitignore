@@ -1,9 +1,9 @@
 # Swagger Generated files
-/gen/models
-/gen/restapi/operations
-/gen/restapi/doc.go
-/gen/restapi/embedded_spec.go
-/gen/restapi/server.go
+/src/gen/models
+/src/gen/restapi/operations
+/src/gen/restapi/doc.go
+/src/gen/restapi/embedded_spec.go
+/src/gen/restapi/server.go
 
 # IntelliJ / GoLand
 /.idea/.gitignore

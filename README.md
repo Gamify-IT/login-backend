@@ -25,10 +25,12 @@ go run .
 
 ### Project setup
 
-| File / Directory | Description                              |
-|------------------|------------------------------------------|
-| main.go          | Entry point of the program               |
-| swagger/         | Contains the API specification (Swagger) |
-| prisma/          | Database schema (Prisma)                 |
-| src/handlers/    | Our HTTP handler implementation (Go)     |
-| src/gen/         | Generated files from Prisma and Swagger  |
+| File / Directory                     | Description                                                                               |
+|--------------------------------------|-------------------------------------------------------------------------------------------|
+| `main.go`                            | Entry point of the program                                                                |
+| `swagger/`                           | Contains the API specification (Swagger)                                                  |
+| `prisma/`                            | Database schema (Prisma)                                                                  |
+| `src/handlers/`                      | Our HTTP handler implementations (Go)                                                     |
+| `src/handlers/handlers.go`           | Adds all our handler functions to the server                                              |
+| `src/gen/`                           | Generated files from Prisma and Swagger. Do not edit or commit generated files!           |
+| `src/gen/restapi/configure_login.go` | Configuration for the HTTP server. The only file in `src/gen/` that can be safely edited. |

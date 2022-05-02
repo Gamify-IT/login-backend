@@ -4,9 +4,9 @@ info:
   title: A Todo list application
   version: 1.0.0
 consumes:
-  - application/io.goswagger.examples.todo-list.v1+json
+  - application/json
 produces:
-  - application/io.goswagger.examples.todo-list.v1+json
+  - application/json
 schemes:
   - http
 paths:
@@ -35,6 +35,15 @@ paths:
           description: generic error response
           schema:
             $ref: "#/definitions/error"
+  /health:
+    get:
+      tags:
+        - health
+      responses:
+        200:
+          description: Check application health
+          schema:
+            $ref: "#/definitions/health"
 definitions:
   item:
     type: object
@@ -60,3 +69,13 @@ definitions:
         format: int64
       message:
         type: string
+  health:
+    type: object
+    properties:
+      status:
+        type: string
+      components:
+        type: object
+        properties:
+          database:
+            type: string

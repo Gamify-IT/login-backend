@@ -7,5 +7,5 @@ import (
 
 func ConfigureAPI(api *operations.LoginAPI, client *db.PrismaClient) {
 
-	api.HealthGetHealthHandler = healthHandler()
+	api.HealthGetHealthHandler = healthHandler(client)
 }

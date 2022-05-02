@@ -23,6 +23,18 @@ The `go build` configuration performs the following tasks for you:
 - generates the Prisma database client
 - compiles & runs the project
 
+### Migrating the database
+When changes to the database are made, you can create a migration by running
+```sh
+POSTGRES_URL=postgresql://postgres:password@localhost:5432/postgres go run github.com/prisma/prisma-client-go migrate apply --name $MIGRATION_NAME
+```
+inside the project root dir.\
+To apply all pending migrations, simply run
+```sh
+POSTGRES_URL=postgresql://postgres:password@localhost:5432/postgres go run github.com/prisma/prisma-client-go migrate deploy
+```
+inside the project root dir.
+
 ### Project structure
 
 | File / Directory                     | Description                                                                               |

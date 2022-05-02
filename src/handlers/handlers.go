@@ -6,6 +6,6 @@ import (
 )
 
 func ConfigureAPI(api *operations.LoginAPI, client *db.PrismaClient) {
-
+	// Route: /health
 	api.HealthGetHealthHandler = healthHandler(client)
 }

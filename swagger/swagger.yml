@@ -41,7 +41,11 @@ paths:
         - health
       responses:
         200:
-          description: Check application health
+          description: Application is healthy
+          schema:
+            $ref: "#/definitions/health"
+        503:
+          description: Application is NOT healthy
           schema:
             $ref: "#/definitions/health"
 definitions:
@@ -74,8 +78,3 @@ definitions:
     properties:
       status:
         type: string
-      components:
-        type: object
-        properties:
-          database:
-            type: string

@@ -13,14 +13,12 @@ func healthHandler(client *db.PrismaClient) health.GetHealthHandlerFunc {
 
 		// Check if DB is alive by performing any select
 		_, err := client.User.FindFirst(db.User.ID.Contains("")).Exec(params.HTTPRequest.Context())
-		dbStatus := "UP"
 		if err != nil {
-			dbStatus = "DOWN"
+			return health.NewGetHealthServiceUnavailable().WithPayload(&models.Health{
+				Status: "DOWN",
+			})
 		}
 		return health.NewGetHealthOK().WithPayload(&models.Health{
-			Components: &models.HealthComponents{
-				Database: dbStatus,
-			},
 			Status: "UP",
 		})
 	})

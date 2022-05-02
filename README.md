@@ -6,6 +6,7 @@
 
 Make sure you have the following installed:
 
+- Docker / Docker desktop: https://www.docker.com/products/docker-desktop
 - Go: https://go.dev
 - GoLand: https://www.jetbrains.com/go/
 

@@ -9,8 +9,8 @@ import (
 
 func loginUser(api *operations.LoginAPI, client *db.PrismaClient) login.PostLoginHandlerFunc {
 	return login.PostLoginHandlerFunc(func(params login.PostLoginParams) middleware.Responder {
-		username := params.Username
-		password := params.Password
+		username := params.Body.Username
+		password := params.Body.Password
 
 		// TODO: Database Check
 		success := (username == username) && (password == password)

@@ -40,12 +40,11 @@ paths:
       tags:
         - login
       parameters:
-        - name: username
-          in: formData
-          type: string
-        - name: password
-          in: formData
-          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/login"
       responses:
         200:
           description: Login was successfull
@@ -57,15 +56,11 @@ paths:
       tags:
         - register
       parameters:
-        - name: username
-          in: formData
-          type: string
-        - name: email
-          in: formData
-          type: string
-        - name: password
-          in: formData
-          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/register"
       responses:
         200:
           description: Registration successfull
@@ -96,3 +91,29 @@ definitions:
         format: int64
       message:
         type: string
+  login:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+    required:
+      - username
+      - password
+  register:
+    type: object
+    properties:
+      username:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+    required:
+      - username
+      - password
+      - email
+
+
+

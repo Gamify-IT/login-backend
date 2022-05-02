@@ -16,6 +16,7 @@ require (
 	github.com/prisma/prisma-client-go v0.15.0
 	github.com/shopspring/decimal v1.3.1
 	github.com/takuoki/gocase v1.0.0
+	golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce
 	golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4
 )
 

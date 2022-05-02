@@ -61,8 +61,12 @@ paths:
       responses:
         200:
           description: Login was successfull
-        403:
-          description: Credentials wrong
+          schema:
+            $ref: "#/definitions/user"
+        400:
+          description: Credentials wrong or Username does not exist
+        500:
+          description: Internal Server Error
 
   /register:
     post:
@@ -77,8 +81,14 @@ paths:
       responses:
         200:
           description: Registration successfull
+          schema:
+            $ref: "#/definitions/user"
         400:
           description: Username or E-Mail already used
+          schema:
+            $ref: "#/definitions/registration-error"
+        500:
+          description: Internal Server Error
 definitions:
   item:
     type: object
@@ -132,6 +142,23 @@ definitions:
       - username
       - password
       - email
+  registration-error:
+    type: object
+    properties:
+      message:
+        type: string
+  login-error:
+    type: object
+    properties:
+      message:
+        type: string
+  user:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
 
 
 

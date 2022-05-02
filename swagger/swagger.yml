@@ -4,9 +4,9 @@ info:
   title: A Todo list application
   version: 1.0.0
 consumes:
-  - application/io.goswagger.examples.todo-list.v1+json
+  - application/json
 produces:
-  - application/io.goswagger.examples.todo-list.v1+json
+  - application/json
 schemes:
   - http
 paths:
@@ -35,6 +35,42 @@ paths:
           description: generic error response
           schema:
             $ref: "#/definitions/error"
+  /login:
+    post:
+      tags:
+        - login
+      parameters:
+        - name: username
+          in: formData
+          type: string
+        - name: password
+          in: formData
+          type: string
+      responses:
+        200:
+          description: Login was successfull
+        403:
+          description: Credentials wrong
+
+  /register:
+    post:
+      tags:
+        - register
+      parameters:
+        - name: username
+          in: formData
+          type: string
+        - name: email
+          in: formData
+          type: string
+        - name: password
+          in: formData
+          type: string
+      responses:
+        200:
+          description: Registration successfull
+        400:
+          description: Username or E-Mail already used
 definitions:
   item:
     type: object

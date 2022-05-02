@@ -9,8 +9,15 @@ import (
 
 func ConfigureAPI(api *operations.LoginAPI, client *db.PrismaClient) {
 	if api.TodosGetHandler == nil {
+		// Route: /
 		api.TodosGetHandler = todos.GetHandlerFunc(func(params todos.GetParams) middleware.Responder {
 			return middleware.NotImplemented("operation todos.Get has not yet been implemented")
 		})
+
+		// Route: /login
+		api.LoginPostLoginHandler = loginUser(api, client)
+
+		// Route: /register
+		api.RegisterPostRegisterHandler = registerUser(api, client)
 	}
 }

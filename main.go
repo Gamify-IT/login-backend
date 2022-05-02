@@ -1,6 +1,5 @@
 package main
 
-//go:generate mkdir -p src/gen/db
 //go:generate go run github.com/prisma/prisma-client-go generate
 //go:generate go run github.com/go-swagger/go-swagger/cmd/swagger generate server --target ./src/gen --name Login --spec ./swagger/swagger.yml --principal interface{} --exclude-main
 

@@ -67,6 +67,8 @@ paths:
           description: Credentials wrong or Username does not exist
         500:
           description: Internal Server Error
+          schema:
+            $ref: "#/definitions/login-error"
 
   /register:
     post:
@@ -84,11 +86,13 @@ paths:
           schema:
             $ref: "#/definitions/user"
         400:
-          description: Username or E-Mail already used
+          description: Username already used
           schema:
             $ref: "#/definitions/registration-error"
         500:
           description: Internal Server Error
+          schema:
+            $ref: "#/definitions/registration-error"
 definitions:
   item:
     type: object

@@ -10,8 +10,8 @@ func ConfigureAPI(api *operations.LoginAPI, client *db.PrismaClient) {
 	api.HealthGetHealthHandler = healthHandler(client)
 
 	// Route: /login
-	api.LoginPostLoginHandler = loginUser(api, client)
+	api.LoginPostLoginHandler = loginUser(client)
 
 	// Route: /register
-	api.RegisterPostRegisterHandler = registerUser(api, client)
+	api.RegisterPostRegisterHandler = registerUser(client)
 }

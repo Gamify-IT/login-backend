@@ -19,7 +19,7 @@ func loginUser(client *db.PrismaClient) login.PostLoginHandlerFunc {
 		user, err := client.User.FindFirst(db.User.Name.Equals(*username)).Exec(params.HTTPRequest.Context())
 
 		if err != nil {
-			return login.NewPostLoginInternalServerError().WithPayload(&models.LoginError{
+			return login.NewPostLoginInternalServerError().WithPayload(&models.Error{
 				Message: "Error finding existing user in database",
 			})
 		}

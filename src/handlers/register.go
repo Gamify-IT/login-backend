@@ -20,13 +20,13 @@ func registerUser(client *db.PrismaClient) register.PostRegisterHandlerFunc {
 		existingUser, err := client.User.FindFirst(db.User.Name.Equals(*username)).Exec(params.HTTPRequest.Context())
 
 		if err != nil {
-			return register.NewPostRegisterInternalServerError().WithPayload(&models.RegistrationError{
+			return register.NewPostRegisterInternalServerError().WithPayload(&models.Error{
 				Message: "Error finding existing user in database",
 			})
 		}
 
 		if existingUser != nil {
-			return register.NewPostRegisterBadRequest().WithPayload(&models.RegistrationError{
+			return register.NewPostRegisterBadRequest().WithPayload(&models.Error{
 				Message: "Username already in use",
 			})
 		}
@@ -36,7 +36,7 @@ func registerUser(client *db.PrismaClient) register.PostRegisterHandlerFunc {
 		createdUser, err := client.User.FindFirst(db.User.Name.Equals(*username)).Exec(params.HTTPRequest.Context())
 
 		if err != nil {
-			return register.NewPostRegisterInternalServerError().WithPayload(&models.RegistrationError{
+			return register.NewPostRegisterInternalServerError().WithPayload(&models.Error{
 				Message: "Error finding registered user in database",
 			})
 		}

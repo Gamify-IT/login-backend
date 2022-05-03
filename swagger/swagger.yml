@@ -60,7 +60,7 @@ paths:
             $ref: "#/definitions/login"
       responses:
         200:
-          description: Login was successfull
+          description: Login was successful
           schema:
             $ref: "#/definitions/user"
         400:
@@ -68,7 +68,7 @@ paths:
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/login-error"
+            $ref: "#/definitions/error"
 
   /register:
     post:
@@ -82,17 +82,17 @@ paths:
             $ref: "#/definitions/register"
       responses:
         200:
-          description: Registration successfull
+          description: Registration successful
           schema:
             $ref: "#/definitions/user"
         400:
           description: Username already used
           schema:
-            $ref: "#/definitions/registration-error"
+            $ref: "#/definitions/error"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/registration-error"
+            $ref: "#/definitions/error"
 definitions:
   item:
     type: object
@@ -110,12 +110,7 @@ definitions:
         type: boolean
   error:
     type: object
-    required:
-      - message
     properties:
-      code:
-        type: integer
-        format: int64
       message:
         type: string
   health:
@@ -147,16 +142,6 @@ definitions:
       - username
       - password
       - email
-  registration-error:
-    type: object
-    properties:
-      message:
-        type: string
-  login-error:
-    type: object
-    properties:
-      message:
-        type: string
   user:
     type: object
     properties:

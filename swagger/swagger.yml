@@ -48,6 +48,51 @@ paths:
           description: Application is NOT healthy
           schema:
             $ref: "#/definitions/health"
+  /login:
+    post:
+      tags:
+        - login
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/login"
+      responses:
+        200:
+          description: Login was successful
+          schema:
+            $ref: "#/definitions/user"
+        400:
+          description: Wrong credentials or the user does not exist
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/error"
+
+  /register:
+    post:
+      tags:
+        - register
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/register"
+      responses:
+        200:
+          description: Registration successful
+          schema:
+            $ref: "#/definitions/user"
+        400:
+          description: Username already used
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/error"
 definitions:
   item:
     type: object
@@ -65,12 +110,7 @@ definitions:
         type: boolean
   error:
     type: object
-    required:
-      - message
     properties:
-      code:
-        type: integer
-        format: int64
       message:
         type: string
   health:
@@ -78,3 +118,36 @@ definitions:
     properties:
       status:
         type: string
+  login:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+    required:
+      - username
+      - password
+  register:
+    type: object
+    properties:
+      username:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+    required:
+      - username
+      - password
+      - email
+  user:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+
+
+

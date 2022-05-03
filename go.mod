@@ -13,9 +13,10 @@ require (
 	github.com/iancoleman/strcase v0.0.0-20190422225806-e506e3ef7365
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/joho/godotenv v1.4.0
-	github.com/prisma/prisma-client-go v0.14.0
+	github.com/prisma/prisma-client-go v0.15.0
 	github.com/shopspring/decimal v1.3.1
 	github.com/takuoki/gocase v1.0.0
+	golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce
 	golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4
 )
 

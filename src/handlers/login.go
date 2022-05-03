@@ -24,11 +24,7 @@ func loginUser(client *db.PrismaClient) login.PostLoginHandlerFunc {
 			})
 		}
 
-		if user == nil {
-			return login.NewPostLoginBadRequest()
-		}
-
-		if user.PasswordHash != string(hashedPassword) {
+		if user == nil || user.PasswordHash != string(hashedPassword) {
 			return login.NewPostLoginBadRequest()
 		}
 

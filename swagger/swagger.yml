@@ -64,7 +64,7 @@ paths:
           schema:
             $ref: "#/definitions/user"
         400:
-          description: Credentials wrong or Username does not exist
+          description: Wrong credentials or the user does not exist
         500:
           description: Internal Server Error
           schema:

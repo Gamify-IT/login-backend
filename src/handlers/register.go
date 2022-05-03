@@ -21,7 +21,7 @@ func registerUser(client *db.PrismaClient) register.PostRegisterHandlerFunc {
 
 		if err != nil {
 			return register.NewPostRegisterInternalServerError().WithPayload(&models.Error{
-				Message: "Error finding existing user in database",
+				Message: "An error occurred while adding the user to the database",
 			})
 		}
 
@@ -37,7 +37,7 @@ func registerUser(client *db.PrismaClient) register.PostRegisterHandlerFunc {
 
 		if err != nil {
 			return register.NewPostRegisterInternalServerError().WithPayload(&models.Error{
-				Message: "Error finding registered user in database",
+				Message: "An error occurred while adding the user to the database",
 			})
 		}
 

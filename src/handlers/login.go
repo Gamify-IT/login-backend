@@ -5,6 +5,7 @@ import (
 	"github.com/Gamify-IT/login-backend/src/gen/db"
 	"github.com/Gamify-IT/login-backend/src/gen/models"
 	"github.com/Gamify-IT/login-backend/src/gen/restapi/operations/login"
+	"github.com/Gamify-IT/login-backend/src/handlers/auth"
 	"github.com/go-openapi/runtime/middleware"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -30,10 +31,18 @@ func loginUser(client *db.PrismaClient) login.PostLoginHandlerFunc {
 			return login.NewPostLoginBadRequest()
 		}
 
-		return login.NewPostLoginOK().WithPayload(&models.User{
-			ID:   user.ID,
-			Name: user.Name,
-		})
+		token, err := auth.GenerateJWT(user.ID, user.Name)
 
+		if err != nil {
+			return login.NewPostLoginInternalServerError().WithPayload(&models.Error{
+				Message: "Error creating token",
+			})
+		}
+
+		return login.NewPostLoginOK().WithPayload(&models.LoginSuccess{
+			ID:    user.ID,
+			Name:  user.Name,
+			Token: token,
+		})
 	})
 }

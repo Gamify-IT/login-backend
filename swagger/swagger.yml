@@ -62,7 +62,7 @@ paths:
         200:
           description: Login was successful
           schema:
-            $ref: "#/definitions/user"
+            $ref: "#/definitions/login-success"
         400:
           description: Wrong credentials or the user does not exist
         500:
@@ -148,6 +148,14 @@ definitions:
         type: string
       name:
         type: string
-
+  login-success:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      token:
+        type: string
 
 

@@ -1,7 +1,7 @@
 FROM golang:1.18.1-bullseye AS build
 
 # Setup working directory
-WORKDIR /app
+WORKDIR /login-backend
 
 # Download dependencies into cache
 COPY go.mod go.sum ./
@@ -16,7 +16,7 @@ COPY . .
 RUN go generate
 
 # Build
-RUN go build -ldflags="-s -w" -o server .
+RUN go build -ldflags="-s -w" -buildvcs=false -o server .
 
 # PORT for the REST API
 ENV PORT=4000 HOST=0.0.0.0

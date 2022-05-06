@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"github.com/Gamify-IT/login-backend/src/gen/db"
 	"github.com/Gamify-IT/login-backend/src/gen/models"
 	"github.com/Gamify-IT/login-backend/src/gen/restapi/operations/login"
@@ -14,17 +15,18 @@ func loginUser(client *db.PrismaClient) login.PostLoginHandlerFunc {
 		username := params.Body.Username
 		password := params.Body.Password
 
-		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(*password), bcrypt.DefaultCost)
-
 		user, err := client.User.FindFirst(db.User.Name.Equals(*username)).Exec(params.HTTPRequest.Context())
 
-		if err != nil {
+		if err != nil && !errors.Is(err, db.ErrNotFound) {
 			return login.NewPostLoginInternalServerError().WithPayload(&models.Error{
 				Message: "Error finding existing user in database",
 			})
 		}
-
-		if user == nil || user.PasswordHash != string(hashedPassword) {
+		if errors.Is(err, db.ErrNotFound) {
+			return login.NewPostLoginBadRequest()
+		}
+		passwordCompareError := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(*password))
+		if passwordCompareError != nil {
 			return login.NewPostLoginBadRequest()
 		}
 

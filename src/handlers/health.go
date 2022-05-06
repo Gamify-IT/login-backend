@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"github.com/Gamify-IT/login-backend/src/gen/db"
 	"github.com/Gamify-IT/login-backend/src/gen/models"
 	"github.com/Gamify-IT/login-backend/src/gen/restapi/operations/health"
@@ -13,7 +14,7 @@ func healthHandler(client *db.PrismaClient) health.GetHealthHandlerFunc {
 
 		// Check if DB is alive by performing any select
 		_, err := client.User.FindFirst(db.User.ID.Contains("")).Exec(params.HTTPRequest.Context())
-		if err != nil {
+		if err != nil && !errors.Is(err, db.ErrNotFound) {
 			return health.NewGetHealthServiceUnavailable().WithPayload(&models.Health{
 				Status: "DOWN",
 			})

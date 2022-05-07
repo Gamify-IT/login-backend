@@ -36,17 +36,11 @@ func registerUser(client *db.PrismaClient) register.PostRegisterHandlerFunc {
 			})
 		}
 
-		client.User.CreateOne(db.User.Name.Set(*username), db.User.Email.Set(*email), db.User.PasswordHash.Set(string(hashedPassword))).Exec(params.HTTPRequest.Context())
+		createdUser, err := client.User.CreateOne(db.User.Name.Set(*username), db.User.Email.Set(*email), db.User.PasswordHash.Set(string(hashedPassword))).Exec(params.HTTPRequest.Context())
 
-		createdUser, err := client.User.FindFirst(db.User.Name.Equals(*username)).Exec(params.HTTPRequest.Context())
-
-		if err != nil && !errors.Is(err, db.ErrNotFound) {
+		if err != nil {
 			return register.NewPostRegisterInternalServerError().WithPayload(&models.Error{
 				Message: "An error occurred while adding the user to the database",
-			})
-		} else if errors.Is(err, db.ErrNotFound) {
-			return register.NewPostRegisterInternalServerError().WithPayload(&models.Error{
-				Message: "An error occurred while fetching current added user from the database",
 			})
 		}
 

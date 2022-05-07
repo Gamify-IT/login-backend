@@ -15,7 +15,7 @@ func GenerateJWT(id, name string) (string, error) {
 	claims["user"] = name
 	claims["exp"] = time.Now().Add(time.Hour * 12).Unix()
 
-	tokenString, err := token.SignedString(os.Getenv("JWT_Key"))
+	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_Key")))
 	if err != nil {
 		return "", err
 	}

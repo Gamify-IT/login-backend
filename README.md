@@ -35,6 +35,10 @@ POSTGRES_URL=postgresql://postgres:password@localhost:5432/postgres go run githu
 ```
 inside the project root dir.
 
+### JWT (Json Web Tokens)
+To encode a JWT is a secret key needed. 
+This secret key needs to be stored as environment variable `JWT_Key=someSuperSecretKey`
+
 ### Project structure
 
 | File / Directory                     | Description                                                                               |

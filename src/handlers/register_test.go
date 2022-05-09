@@ -68,10 +68,17 @@ func TestRegisterUser_ShouldReturnOkIfUserNotAlreadyExists(t *testing.T) {
 
 	result := handler(params)
 
-	_, ok := result.(*register.PostRegisterOK)
+	okResult, ok := result.(*register.PostRegisterOK)
 
 	if !ok {
 		t.Errorf("A valid registration should return a 200 status code")
+	}
+	if okResult.Payload.Name != username {
+		t.Errorf("Expected username %q but got %q", username, okResult.Payload.Name)
+	}
+
+	if okResult.Payload.ID != "user id" {
+		t.Errorf("Expected username %q but got %q", username, okResult.Payload.Name)
 	}
 }
 

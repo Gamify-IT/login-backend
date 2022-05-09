@@ -5,6 +5,7 @@ import (
 	"github.com/Gamify-IT/login-backend/src/gen/models"
 	"github.com/Gamify-IT/login-backend/src/gen/restapi/operations/login"
 	"github.com/Gamify-IT/login-backend/src/handlers/auth"
+	"github.com/Gamify-IT/login-backend/src/handlers/hash"
 	"net/http"
 	"testing"
 	"time"
@@ -44,8 +45,9 @@ func TestLoginUser_ShouldReturnOKIfTheUserCredentialsAreValid(t *testing.T) {
 	).Returns(expected) // sets the object which should be returned in the function call
 
 	authenticator := auth.NewAuthenticator("asdf")
+	hasher := &hash.Bcrypt{}
 
-	handler := LoginUser(client, authenticator)
+	handler := LoginUser(client, authenticator, hasher)
 
 	params := login.NewPostLoginParams()
 	params.Body = &models.Login{
@@ -109,8 +111,9 @@ func TestLoginUser_ShouldReturnBadRequestIfTheUserCredentialsAreNotValid(t *test
 	).Returns(expected) // sets the object which should be returned in the function call
 
 	authenticator := auth.NewAuthenticator("asdf")
+	hasher := &hash.Bcrypt{}
 
-	handler := LoginUser(client, authenticator)
+	handler := LoginUser(client, authenticator, hasher)
 
 	params := login.NewPostLoginParams()
 	params.Body = &models.Login{
@@ -151,8 +154,9 @@ func TestLoginUser_ShouldReturnBadRequestIfTheUserDoesNotExists(t *testing.T) {
 	).Errors(db.ErrNotFound) // sets the object which should be returned in the function call
 
 	authenticator := auth.NewAuthenticator("asdf")
+	hasher := &hash.Bcrypt{}
 
-	handler := LoginUser(client, authenticator)
+	handler := LoginUser(client, authenticator, hasher)
 
 	params := login.NewPostLoginParams()
 	params.Body = &models.Login{

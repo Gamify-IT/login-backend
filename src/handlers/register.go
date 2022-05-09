@@ -5,18 +5,19 @@ import (
 	"github.com/Gamify-IT/login-backend/src/gen/db"
 	"github.com/Gamify-IT/login-backend/src/gen/models"
 	"github.com/Gamify-IT/login-backend/src/gen/restapi/operations/register"
+	"github.com/Gamify-IT/login-backend/src/handlers/hash"
 	"github.com/go-openapi/runtime/middleware"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // RegisterUser let a user register with username, email and password
-func RegisterUser(client *db.PrismaClient) register.PostRegisterHandlerFunc {
+func RegisterUser(client *db.PrismaClient, hasher hash.Hasher) register.PostRegisterHandlerFunc {
 	return register.PostRegisterHandlerFunc(func(params register.PostRegisterParams) middleware.Responder {
 		username := params.Body.Username
 		email := params.Body.Email
 		password := params.Body.Password
 
-		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(*password), bcrypt.DefaultCost)
+		hashedPassword, err := hasher.GenerateFromPassword([]byte(*password), bcrypt.DefaultCost)
 
 		if err != nil {
 			return register.NewPostRegisterInternalServerError().WithPayload(&models.Error{
@@ -36,7 +37,11 @@ func RegisterUser(client *db.PrismaClient) register.PostRegisterHandlerFunc {
 			})
 		}
 
-		createdUser, err := client.User.CreateOne(db.User.Name.Set(*username), db.User.Email.Set(*email), db.User.PasswordHash.Set(string(hashedPassword))).Exec(params.HTTPRequest.Context())
+		createdUser, err := client.User.CreateOne(
+			db.User.Name.Set(*username),
+			db.User.Email.Set(*email),
+			db.User.PasswordHash.Set(string(hashedPassword)),
+		).Exec(params.HTTPRequest.Context())
 
 		if err != nil {
 			return register.NewPostRegisterInternalServerError().WithPayload(&models.Error{

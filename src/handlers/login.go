@@ -6,12 +6,12 @@ import (
 	"github.com/Gamify-IT/login-backend/src/gen/models"
 	"github.com/Gamify-IT/login-backend/src/gen/restapi/operations/login"
 	"github.com/Gamify-IT/login-backend/src/handlers/auth"
+	"github.com/Gamify-IT/login-backend/src/handlers/hash"
 	"github.com/go-openapi/runtime/middleware"
-	"golang.org/x/crypto/bcrypt"
 )
 
 // LoginUser let a user log in
-func LoginUser(client *db.PrismaClient, generator *auth.Authenticator) login.PostLoginHandlerFunc {
+func LoginUser(client *db.PrismaClient, generator *auth.Authenticator, hash hash.Hasher) login.PostLoginHandlerFunc {
 	return login.PostLoginHandlerFunc(func(params login.PostLoginParams) middleware.Responder {
 		username := params.Body.Username
 		password := params.Body.Password
@@ -26,7 +26,7 @@ func LoginUser(client *db.PrismaClient, generator *auth.Authenticator) login.Pos
 		if errors.Is(err, db.ErrNotFound) {
 			return login.NewPostLoginBadRequest()
 		}
-		passwordCompareError := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(*password))
+		passwordCompareError := hash.CompareHashAndPassword([]byte(user.PasswordHash), []byte(*password))
 		if passwordCompareError != nil {
 			return login.NewPostLoginBadRequest()
 		}

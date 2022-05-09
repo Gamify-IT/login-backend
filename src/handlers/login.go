@@ -10,7 +10,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// loginUser let a user log in
+// LoginUser let a user log in
 func LoginUser(client *db.PrismaClient, generator *auth.Authenticator) login.PostLoginHandlerFunc {
 	return login.PostLoginHandlerFunc(func(params login.PostLoginParams) middleware.Responder {
 		username := params.Body.Username

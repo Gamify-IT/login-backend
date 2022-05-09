@@ -17,5 +17,5 @@ func ConfigureAPI(api *operations.LoginAPI, client *db.PrismaClient) {
 	api.LoginPostLoginHandler = LoginUser(client, generator)
 
 	// Route: /register
-	api.RegisterPostRegisterHandler = registerUser(client)
+	api.RegisterPostRegisterHandler = RegisterUser(client)
 }

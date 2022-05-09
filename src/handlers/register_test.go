@@ -4,6 +4,7 @@ import (
 	"github.com/Gamify-IT/login-backend/src/gen/db"
 	"github.com/Gamify-IT/login-backend/src/gen/models"
 	"github.com/Gamify-IT/login-backend/src/gen/restapi/operations/register"
+	"github.com/Gamify-IT/login-backend/src/handlers/hash"
 	"net/http"
 	"testing"
 	"time"
@@ -43,7 +44,8 @@ func TestRegisterUser_ShouldReturnBadRequestIfUserAlreadyExists(t *testing.T) {
 		),
 	).Returns(expected) // sets the object which should be returned in the function call
 
-	handler := RegisterUser(client)
+	hasher := &hash.Bcrypt{}
+	handler := RegisterUser(client, hasher)
 
 	params := register.NewPostRegisterParams()
 	params.Body = &models.Register{

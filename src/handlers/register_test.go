@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func TestRegisterUser_ShouldReturnBadRequestIfNoUserAlreadyExists(t *testing.T) {
+func TestRegisterUser_ShouldReturnBadRequestIfUserAlreadyExists(t *testing.T) {
 	// create a new mock
 	// this returns a mock prisma `client` and a `mock` object to set expectations
 	client, mock, ensure := db.NewMock()

@@ -11,7 +11,7 @@ import (
 )
 
 // loginUser let a user log in
-func loginUser(client *db.PrismaClient) login.PostLoginHandlerFunc {
+func LoginUser(client *db.PrismaClient, generator *auth.Authenticator) login.PostLoginHandlerFunc {
 	return login.PostLoginHandlerFunc(func(params login.PostLoginParams) middleware.Responder {
 		username := params.Body.Username
 		password := params.Body.Password
@@ -31,7 +31,7 @@ func loginUser(client *db.PrismaClient) login.PostLoginHandlerFunc {
 			return login.NewPostLoginBadRequest()
 		}
 
-		token, err := auth.GenerateJWT(user.ID, user.Name)
+		token, err := generator.GenerateJWT(user.ID, user.Name)
 
 		if err != nil {
 			return login.NewPostLoginInternalServerError().WithPayload(&models.Error{

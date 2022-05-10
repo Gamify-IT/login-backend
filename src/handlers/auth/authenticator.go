@@ -33,7 +33,7 @@ func (j *Authenticator) GenerateJWT(id, name string) (string, error) {
 func (j *Authenticator) Verify(tokenString string) error {
 	_, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("There was an error in parsing")
+			return nil, fmt.Errorf("Could not parse token: token method is %T instead of jwt.SigningMethodHMAC", token.Method)
 		}
 		return []byte(j.secret), nil
 	})

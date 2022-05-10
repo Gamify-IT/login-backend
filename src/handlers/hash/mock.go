@@ -1,6 +1,6 @@
 package hash
 
-// compile-time check that Bcrypt implements the Hasher interface
+// compile-time check that Mock implements the Hasher interface
 var _ Hasher = &Mock{}
 
 type Mock struct {

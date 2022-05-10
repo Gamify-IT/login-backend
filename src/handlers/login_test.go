@@ -20,13 +20,14 @@ func TestLoginUser_ShouldReturnOKIfTheUserCredentialsAreValid(t *testing.T) {
 	// and makes sure that all of them succeeded
 	defer ensure(t)
 
+	id := "user id"
 	username := "Test User"
 	password := "password"
 	passwordHash := "$2a$10$KIKrid5AyyXHKHXRt.zS7OrlYWqYv2FUJOXVOktCotczFKRhmVBW."
 
 	expected := db.UserModel{
 		InnerUser: db.InnerUser{
-			ID:           "user id",
+			ID:           id,
 			CreatedAt:    time.Now(),
 			Name:         username,
 			Email:        "test@username.com",
@@ -68,8 +69,8 @@ func TestLoginUser_ShouldReturnOKIfTheUserCredentialsAreValid(t *testing.T) {
 		t.Errorf("Expected username %q but got %q", username, okResult.Payload.Name)
 	}
 
-	if okResult.Payload.ID != "user id" {
-		t.Errorf("Expected username %q but got %q", username, okResult.Payload.Name)
+	if okResult.Payload.ID != id {
+		t.Errorf("Expected user ID %q but got %q", id, okResult.Payload.ID)
 	}
 
 	if err := authenticator.Verify(okResult.Payload.Token); err != nil {

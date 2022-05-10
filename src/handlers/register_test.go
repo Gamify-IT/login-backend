@@ -20,6 +20,7 @@ func TestRegisterUser_ShouldReturnOkIfUserNotAlreadyExists(t *testing.T) {
 	// and makes sure that all of them succeeded
 	defer ensure(t)
 
+	id := "user id"
 	username := "Test User"
 	email := "test@username.com"
 	password := "password"
@@ -30,7 +31,7 @@ func TestRegisterUser_ShouldReturnOkIfUserNotAlreadyExists(t *testing.T) {
 
 	expected := db.UserModel{
 		InnerUser: db.InnerUser{
-			ID:           "user id",
+			ID:           id,
 			CreatedAt:    time.Now(),
 			Name:         username,
 			Email:        email,
@@ -77,8 +78,8 @@ func TestRegisterUser_ShouldReturnOkIfUserNotAlreadyExists(t *testing.T) {
 		t.Errorf("Expected username %q but got %q", username, okResult.Payload.Name)
 	}
 
-	if okResult.Payload.ID != "user id" {
-		t.Errorf("Expected username %q but got %q", username, okResult.Payload.Name)
+	if okResult.Payload.ID != id {
+		t.Errorf("Expected user id %q but got %q", id, okResult.Payload.ID)
 	}
 }
 

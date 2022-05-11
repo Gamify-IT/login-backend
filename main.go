@@ -4,6 +4,8 @@ package main
 //go:generate go run github.com/go-swagger/go-swagger/cmd/swagger generate server --target ./src/gen --name Login --spec ./swagger/swagger.yml --principal interface{} --exclude-main
 
 import (
+	_ "github.com/go-swagger/go-swagger"
+
 	"github.com/Gamify-IT/login-backend/src/gen/restapi"
 	"github.com/Gamify-IT/login-backend/src/gen/restapi/operations"
 	"log"

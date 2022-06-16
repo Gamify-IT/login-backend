@@ -3,7 +3,7 @@ on: [push]
 jobs:
   unit-test:
     name: "Unit tests"
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/setup-go@v1
         with:

@@ -35,9 +35,13 @@ POSTGRES_URL=postgresql://postgres:password@localhost:5432/postgres go run githu
 ```
 inside the project root dir.
 
-### JWT (Json Web Tokens)
-To encode a JWT, a secret key is needed. 
-This secret key needs to be stored under the environment variable `JWT_KEY`.
+### Environment Variables
+| Variable                | Description                                                                                                                                                                              |
+|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `PORT`                  | OPTIONAL: You can use this to change the port that the API listens to. Default: 4000                                                                                                     |
+| `POSTGRES_URL`          | **REQUIRED**: Connection URL to the postgres database. As an example, see [Migrating the database](#migrating-the-database) above.                                                       |
+| `JWT_KEY`               | **REQUIRED**: We use this key to cryptographically sign the JWT token. Other backends can use this token to authenticate the user.                                                       |
+| `JWT_VALIDITY_DURATION` | **REQUIRED**: The timespan how log each JWT is valid. The user has to log in again, if the token expires. Valid time units are “ns”, “us” (or “µs”), “ms”, “s”, “m”, “h”. Example: "24h" |
 
 ### Project structure
 

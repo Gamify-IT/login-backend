@@ -1,6 +1,15 @@
 # Login Backend
 
+## IMPORTANT
+
+This project depends on a lot of generated code.
+When you first clone the project, you need to either follow the [Getting started](#getting-started) guide, or run `go generate`.
+Every time you change something in `swagger/swagger.yaml` or `prisma/schema.prisma`, you **must** regenerate the files for your changes to take effect.
+Do this by again using the `go generate` command or the `go build` run configuration.
+
 ## Development
+
+Here is how you get started when developing on the login backend.
 
 ### Getting started
 
@@ -12,16 +21,22 @@ Make sure you have the following installed:
 
 > When you open the project with GoLand, it should prompt you to **install the required plugins**.
 
-This repository contains **run configurations** which are loaded automatically when you open
-the project in GoLand. To run the project, select the `go build` configuration in the top right
-toolbar.
+The project contains two run configurations which GoLand will automatically load.
+You can find them in the top right toolbar.
 
-The `go build` configuration performs the following tasks for you:
+First, you need to start a database. Select "run database" in the dropdown menu (left of the green play button).
+Then click the play button to start the database.
 
-- starts a postgres database with docker
-- generates the Swagger code for the server
-- generates the Prisma database client
-- compiles & runs the project
+Initially, the database is empty. You need to create the database tables with the following command:
+```sh
+POSTGRES_URL=postgresql://postgres:password@localhost:5432/postgres go run github.com/prisma/prisma-client-go migrate deploy
+```
+
+Finally, to run the project, select the `go build` configuration in the dropdown menu (left of the green play button).
+Click the play button to compile and run the project.
+
+The server prints the URL where it is running to the console.
+Visit http://localhost:4000/docs to see the API documentation.
 
 ### Migrating the database
 When changes to the database are made, you can create a migration by running

@@ -134,7 +134,3 @@ definitions:
         type: string
       name:
         type: string
-      token:
-        type: string
-
-

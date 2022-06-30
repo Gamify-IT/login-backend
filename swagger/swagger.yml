@@ -10,31 +10,6 @@ produces:
 schemes:
   - http
 paths:
-  /:
-    get:
-      tags:
-        - todos
-      parameters:
-        - name: since
-          in: query
-          type: integer
-          format: int64
-        - name: limit
-          in: query
-          type: integer
-          format: int32
-          default: 20
-      responses:
-        200:
-          description: list the todo operations
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/item"
-        default:
-          description: generic error response
-          schema:
-            $ref: "#/definitions/error"
   /health:
     get:
       tags:
@@ -63,6 +38,10 @@ paths:
           description: Login was successful
           schema:
             $ref: "#/definitions/login-success"
+          headers:
+            Set-Cookie:
+              type: string
+              description: Set a cookie called "token" to a JWT formatted session token
         400:
           description: Wrong credentials or the user does not exist
         500:

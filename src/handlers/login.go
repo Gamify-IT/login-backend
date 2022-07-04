@@ -13,7 +13,7 @@ import (
 
 // LoginUser let a user log in
 func LoginUser(client *db.PrismaClient, generator *auth.Authenticator, hash hash.Hasher) login.PostLoginHandlerFunc {
-	return login.PostLoginHandlerFunc(func(params login.PostLoginParams) middleware.Responder {
+	return func(params login.PostLoginParams) middleware.Responder {
 		username := params.Body.Username
 		password := params.Body.Password
 
@@ -46,5 +46,5 @@ func LoginUser(client *db.PrismaClient, generator *auth.Authenticator, hash hash
 			ID:   user.ID,
 			Name: user.Name,
 		})
-	})
+	}
 }

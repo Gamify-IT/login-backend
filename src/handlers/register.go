@@ -12,7 +12,7 @@ import (
 
 // RegisterUser let a user register with username, email and password
 func RegisterUser(client *db.PrismaClient, hasher hash.Hasher) register.PostRegisterHandlerFunc {
-	return register.PostRegisterHandlerFunc(func(params register.PostRegisterParams) middleware.Responder {
+	return func(params register.PostRegisterParams) middleware.Responder {
 		username := params.Body.Username
 		email := params.Body.Email
 		password := params.Body.Password
@@ -53,5 +53,5 @@ func RegisterUser(client *db.PrismaClient, hasher hash.Hasher) register.PostRegi
 			ID:   createdUser.ID,
 			Name: createdUser.Name,
 		})
-	})
+	}
 }

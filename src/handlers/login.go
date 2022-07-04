@@ -8,6 +8,7 @@ import (
 	"github.com/Gamify-IT/login-backend/src/handlers/auth"
 	"github.com/Gamify-IT/login-backend/src/handlers/hash"
 	"github.com/go-openapi/runtime/middleware"
+	"log"
 )
 
 // LoginUser let a user log in
@@ -19,6 +20,7 @@ func LoginUser(client *db.PrismaClient, generator *auth.Authenticator, hash hash
 		user, err := client.User.FindFirst(db.User.Name.Equals(*username)).Exec(params.HTTPRequest.Context())
 
 		if err != nil && !errors.Is(err, db.ErrNotFound) {
+			log.Println(err)
 			return login.NewPostLoginInternalServerError().WithPayload(&models.Error{
 				Message: "Error finding existing user in database",
 			})
@@ -31,18 +33,18 @@ func LoginUser(client *db.PrismaClient, generator *auth.Authenticator, hash hash
 			return login.NewPostLoginBadRequest()
 		}
 
-		token, err := generator.GenerateJWT(user.ID, user.Name)
+		cookie, err := generator.GenerateTokenCookie(user.ID, user.Name)
 
 		if err != nil {
+			log.Println(err)
 			return login.NewPostLoginInternalServerError().WithPayload(&models.Error{
 				Message: "Error creating token",
 			})
 		}
 
-		return login.NewPostLoginOK().WithPayload(&models.LoginSuccess{
-			ID:    user.ID,
-			Name:  user.Name,
-			Token: token,
+		return login.NewPostLoginOK().WithSetCookie(cookie).WithPayload(&models.LoginSuccess{
+			ID:   user.ID,
+			Name: user.Name,
 		})
 	})
 }

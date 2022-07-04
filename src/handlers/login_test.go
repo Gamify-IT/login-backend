@@ -45,7 +45,7 @@ func TestLoginUser_ShouldReturnOKIfTheUserCredentialsAreValid(t *testing.T) {
 		),
 	).Returns(expected) // sets the object which should be returned in the function call
 
-	authenticator := auth.NewAuthenticator("asdf")
+	authenticator := auth.NewAuthenticator("asdf", time.Hour)
 	hasher := &hash.Bcrypt{}
 
 	handler := LoginUser(client, authenticator, hasher)
@@ -71,10 +71,6 @@ func TestLoginUser_ShouldReturnOKIfTheUserCredentialsAreValid(t *testing.T) {
 
 	if okResult.Payload.ID != id {
 		t.Errorf("Expected user ID %q but got %q", id, okResult.Payload.ID)
-	}
-
-	if err := authenticator.Verify(okResult.Payload.Token); err != nil {
-		t.Error(err)
 	}
 }
 
@@ -111,7 +107,7 @@ func TestLoginUser_ShouldReturnBadRequestIfTheUserCredentialsAreNotValid(t *test
 		),
 	).Returns(expected) // sets the object which should be returned in the function call
 
-	authenticator := auth.NewAuthenticator("asdf")
+	authenticator := auth.NewAuthenticator("asdf", time.Hour)
 	hasher := &hash.Bcrypt{}
 
 	handler := LoginUser(client, authenticator, hasher)
@@ -154,7 +150,7 @@ func TestLoginUser_ShouldReturnBadRequestIfTheUserDoesNotExists(t *testing.T) {
 		),
 	).Errors(db.ErrNotFound) // sets the object which should be returned in the function call
 
-	authenticator := auth.NewAuthenticator("asdf")
+	authenticator := auth.NewAuthenticator("asdf", time.Hour)
 	hasher := &hash.Bcrypt{}
 
 	handler := LoginUser(client, authenticator, hasher)

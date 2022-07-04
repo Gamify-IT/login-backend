@@ -5,9 +5,10 @@
     <useCustomBuildTags value="true" />
     <envs>
       <env name="JWT_KEY" value="test" />
+      <env name="JWT_VALIDITY_DURATION" value="720h" />
       <env name="PORT" value="4000" />
       <env name="POSTGRES_URL" value="postgresql://postgres:password@localhost:5432/postgres" />
-      <env name="JWT_VALIDITY_DURATION" value="720h" />
+      <env name="AUTH_COOKIE_NAME" value="token" />
     </envs>
     <kind value="PACKAGE" />
     <package value="github.com/Gamify-IT/login-backend" />

@@ -6,16 +6,22 @@ import (
 	"time"
 )
 
-// tokenName is the name of the cookie that stores the token.
-const tokenName = "token"
-
-func NewAuthenticator(secret string, validityDuration time.Duration) *Authenticator {
-	return &Authenticator{secret: secret, validityDuration: validityDuration}
+func NewAuthenticator(secret string, cookieName string, validityDuration time.Duration) *Authenticator {
+	return &Authenticator{
+		secret:           secret,
+		cookieName:       cookieName,
+		validityDuration: validityDuration,
+	}
 }
 
 type Authenticator struct {
+	cookieName       string
 	secret           string
 	validityDuration time.Duration
+}
+
+func (a *Authenticator) CookieName() string {
+	return a.cookieName
 }
 
 // GenerateTokenCookie returns a cookie header with a new JSON Web Token.
@@ -30,7 +36,7 @@ func (j *Authenticator) GenerateTokenCookie(id, name string) (string, error) {
 
 	maxAge := int(j.validityDuration.Seconds())
 
-	cookie := fmt.Sprintf("%s=%s; Max-Age=%d; Secure; HttpOnly", tokenName, token, maxAge)
+	cookie := fmt.Sprintf("%s=%s; Max-Age=%d; Secure; HttpOnly", a.cookieName, token, maxAge)
 
 	return cookie, nil
 }

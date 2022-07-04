@@ -17,12 +17,17 @@ func ConfigureAPI(api *operations.LoginAPI, dbClient *db.PrismaClient) {
 		panic(fmt.Errorf("JWT_KEY must not be empty"))
 	}
 
+	cookieName := os.Getenv("AUTH_COOKIE_NAME")
+	if cookieName == "" {
+		panic(fmt.Errorf("AUTH_COOKIE_NAME must not be empty"))
+	}
+
 	jwtValidityDuration, err := time.ParseDuration(os.Getenv("JWT_VALIDITY_DURATION"))
 	if err != nil {
 		panic(fmt.Errorf("could parse JWT_VALIDITY_DURATION: %w", err))
 	}
 
-	generator := auth.NewAuthenticator(jwtSecret, jwtValidityDuration)
+	generator := auth.NewAuthenticator(jwtSecret, cookieName, jwtValidityDuration)
 	hasher := &hash.Bcrypt{}
 
 	// Route: /health

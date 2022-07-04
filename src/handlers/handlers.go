@@ -30,6 +30,9 @@ func ConfigureAPI(api *operations.LoginAPI, dbClient *db.PrismaClient) {
 	generator := auth.NewAuthenticator(jwtSecret, cookieName, jwtValidityDuration)
 	hasher := &hash.Bcrypt{}
 
+	// Route: /authenticate
+	api.AuthenticatePostAuthenticateHandler = AuthenticateUser(generator)
+
 	// Route: /health
 	api.HealthGetHealthHandler = healthHandler(dbClient)
 

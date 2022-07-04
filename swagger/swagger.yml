@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
-  description: From the todo list tutorial on goswagger.io
-  title: A Todo list application
+  description: Backend for user login
+  title: API for user authentication
   version: 1.0.0
 consumes:
   - application/json
@@ -23,6 +23,27 @@ paths:
           description: Application is NOT healthy
           schema:
             $ref: "#/definitions/health"
+
+  /authenticate:
+    post:
+      tags:
+        - authenticate
+      responses:
+        200:
+          description: User is logged in and the token has been renewed.
+          schema:
+            $ref: "#/definitions/login-success"
+          headers:
+            Set-Cookie:
+              type: string
+              description: Set a cookie called "token" to a JWT formatted session token
+        401:
+          description: User is not logged in or the token has expired.
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/error"
+
   /login:
     post:
       tags:
@@ -73,20 +94,6 @@ paths:
           schema:
             $ref: "#/definitions/error"
 definitions:
-  item:
-    type: object
-    required:
-      - description
-    properties:
-      id:
-        type: integer
-        format: int64
-        readOnly: true
-      description:
-        type: string
-        minLength: 1
-      completed:
-        type: boolean
   error:
     type: object
     properties:

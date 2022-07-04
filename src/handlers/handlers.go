@@ -11,7 +11,7 @@ import (
 )
 
 // ConfigureAPI registers all our HTTP handlers with the Swagger API server.
-func ConfigureAPI(api *operations.LoginAPI, client *db.PrismaClient) {
+func ConfigureAPI(api *operations.LoginAPI, dbClient *db.PrismaClient) {
 	jwtSecret := os.Getenv("JWT_KEY")
 	if jwtSecret == "" {
 		panic(fmt.Errorf("JWT_KEY must not be empty"))
@@ -26,11 +26,11 @@ func ConfigureAPI(api *operations.LoginAPI, client *db.PrismaClient) {
 	hasher := &hash.Bcrypt{}
 
 	// Route: /health
-	api.HealthGetHealthHandler = healthHandler(client)
+	api.HealthGetHealthHandler = healthHandler(dbClient)
 
 	// Route: /login
-	api.LoginPostLoginHandler = LoginUser(client, generator, hasher)
+	api.LoginPostLoginHandler = LoginUser(dbClient, generator, hasher)
 
 	// Route: /register
-	api.RegisterPostRegisterHandler = RegisterUser(client, hasher)
+	api.RegisterPostRegisterHandler = RegisterUser(dbClient, hasher)
 }

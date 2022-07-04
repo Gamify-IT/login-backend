@@ -12,7 +12,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Unit Tests with Coverage
-        run: go test -coverprofile=coverage.out
+        run: go test -coverprofile=coverage.out ./...
       - uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

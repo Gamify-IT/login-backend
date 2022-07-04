@@ -19,7 +19,7 @@ func ConfigureAPI(api *operations.LoginAPI, client *db.PrismaClient) {
 
 	jwtValidityDuration, err := time.ParseDuration(os.Getenv("JWT_VALIDITY_DURATION"))
 	if err != nil {
-		panic(fmt.Errorf("could parse JWT_VALIDITY_DURATION: %e", err))
+		panic(fmt.Errorf("could parse JWT_VALIDITY_DURATION: %w", err))
 	}
 
 	generator := auth.NewAuthenticator(jwtSecret, jwtValidityDuration)

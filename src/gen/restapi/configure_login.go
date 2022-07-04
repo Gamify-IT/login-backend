@@ -39,7 +39,7 @@ func configureAPI(api *operations.LoginAPI) http.Handler {
 
 	client := db.NewClient()
 	if err := client.Prisma.Connect(); err != nil {
-		panic(fmt.Errorf("database connection: %e", err))
+		panic(fmt.Errorf("database connection: %w", err))
 	}
 
 	handlers.ConfigureAPI(api, client)

@@ -1,12 +1,11 @@
-package helpers
+package auth
 
 import (
-	"github.com/Gamify-IT/login-backend/src/handlers/auth"
 	"net/http"
 	"testing"
 )
 
-func VerifyCookie(t *testing.T, auth *auth.Authenticator, cookieValue string) {
+func VerifyCookieHelper(t *testing.T, auth *Authenticator, cookieValue string) {
 	// Create request object that a client would receive and check cookie
 	clientRequest := &http.Request{}
 	clientRequest.Header = http.Header{}

@@ -3,7 +3,6 @@ package handlers
 import (
 	"github.com/Gamify-IT/login-backend/src/gen/restapi/operations/authenticate"
 	"github.com/Gamify-IT/login-backend/src/handlers/auth"
-	"github.com/Gamify-IT/login-backend/src/helpers"
 	"net/http"
 	"testing"
 	"time"
@@ -26,7 +25,7 @@ func TestAuthenticateUser_ShouldReturnValidNewCookieIfLoggedIn(t *testing.T) {
 
 	// Check result
 	if resultValue, ok := result.(*authenticate.PostAuthenticateOK); ok {
-		helpers.VerifyCookie(t, tokenGenerator, resultValue.SetCookie)
+		auth.VerifyCookieHelper(t, tokenGenerator, resultValue.SetCookie)
 	} else {
 		t.Errorf("expected return type *authenticate.PostAuthenticateOK but got result: %#v", result)
 	}

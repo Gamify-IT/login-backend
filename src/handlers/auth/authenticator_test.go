@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"github.com/Gamify-IT/login-backend/src/helpers"
 	"github.com/golang-jwt/jwt"
 	"testing"
 	"time"
@@ -71,8 +70,8 @@ func TestAuthenticator_endToEnd(t *testing.T) {
 	result, err := a.Verify(token)
 
 	// Check result
-	if err == nil {
-		t.Errorf("Expected an error but got nil, token=%#v, result=%#v", token, result)
+	if err != nil {
+		t.Error(err)
 	}
 	claims, ok := result.Claims.(jwt.MapClaims)
 	if !ok {
@@ -84,7 +83,7 @@ func TestAuthenticator_endToEnd(t *testing.T) {
 		}
 	}
 	if user, ok := claims["user"].(string); ok {
-		if user != "test_user_id" {
+		if user != "test_user_name" {
 			t.Errorf("Expected user=%q but got %q", "test_user_name", user)
 		}
 	}
@@ -105,5 +104,5 @@ func TestAuthenticator_GenerateTokenCookie_ShouldReturnAValidCookie(t *testing.T
 	}
 
 	// Check result
-	helpers.VerifyCookie(t, a, cookie)
+	VerifyCookieHelper(t, a, cookie)
 }

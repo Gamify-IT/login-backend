@@ -6,7 +6,6 @@ import (
 	"github.com/Gamify-IT/login-backend/src/gen/restapi/operations/login"
 	"github.com/Gamify-IT/login-backend/src/handlers/auth"
 	"github.com/Gamify-IT/login-backend/src/handlers/hash"
-	"github.com/Gamify-IT/login-backend/src/helpers"
 	"net/http"
 	"testing"
 	"time"
@@ -66,7 +65,7 @@ func TestLoginUser_ShouldReturnOKIfTheUserCredentialsAreValid(t *testing.T) {
 	if okResult.Payload.ID != "test_user_id" {
 		t.Errorf("Expected user ID %q but got %q", "test_user_id", okResult.Payload.ID)
 	}
-	helpers.VerifyCookie(t, authenticator, okResult.SetCookie)
+	auth.VerifyCookieHelper(t, authenticator, okResult.SetCookie)
 }
 
 func TestLoginUser_ShouldReturnBadRequestIfTheUserCredentialsAreNotValid(t *testing.T) {

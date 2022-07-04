@@ -11,26 +11,34 @@ import (
 )
 
 // ConfigureAPI registers all our HTTP handlers with the Swagger API server.
-func ConfigureAPI(api *operations.LoginAPI, client *db.PrismaClient) {
+func ConfigureAPI(api *operations.LoginAPI, dbClient *db.PrismaClient) {
 	jwtSecret := os.Getenv("JWT_KEY")
 	if jwtSecret == "" {
 		panic(fmt.Errorf("JWT_KEY must not be empty"))
 	}
 
-	jwtValidityDuration, err := time.ParseDuration(os.Getenv("JWT_VALIDITY_DURATION"))
-	if err != nil {
-		panic(fmt.Errorf("could parse JWT_VALIDITY_DURATION: %e", err))
+	cookieName := os.Getenv("AUTH_COOKIE_NAME")
+	if cookieName == "" {
+		panic(fmt.Errorf("AUTH_COOKIE_NAME must not be empty"))
 	}
 
-	generator := auth.NewAuthenticator(jwtSecret, jwtValidityDuration)
+	jwtValidityDuration, err := time.ParseDuration(os.Getenv("JWT_VALIDITY_DURATION"))
+	if err != nil {
+		panic(fmt.Errorf("could parse JWT_VALIDITY_DURATION: %w", err))
+	}
+
+	generator := auth.NewAuthenticator(jwtSecret, cookieName, jwtValidityDuration)
 	hasher := &hash.Bcrypt{}
 
+	// Route: /authenticate
+	api.AuthenticatePostAuthenticateHandler = AuthenticateUser(generator)
+
 	// Route: /health
-	api.HealthGetHealthHandler = healthHandler(client)
+	api.HealthGetHealthHandler = healthHandler(dbClient)
 
 	// Route: /login
-	api.LoginPostLoginHandler = LoginUser(client, generator, hasher)
+	api.LoginPostLoginHandler = LoginUser(dbClient, generator, hasher)
 
 	// Route: /register
-	api.RegisterPostRegisterHandler = RegisterUser(client, hasher)
+	api.RegisterPostRegisterHandler = RegisterUser(dbClient, hasher)
 }

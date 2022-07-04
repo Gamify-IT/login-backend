@@ -12,44 +12,33 @@ import (
 )
 
 func TestLoginUser_ShouldReturnOKIfTheUserCredentialsAreValid(t *testing.T) {
-	// create a new mock
-	// this returns a mock prisma `client` and a `mock` object to set expectations
+	// Create a new database mock
 	client, mock, ensure := db.NewMock()
-	// defer calling ensure, which makes sure all of the expectations were met and actually called
-	// calling this makes sure that an error is returned if there was no query happening for a given expectation
-	// and makes sure that all of them succeeded
+	// At the end of the test, ensure that all of the expectations were met and actually called
 	defer ensure(t)
 
-	id := "user id"
-	username := "Test User"
+	// Prepare mock data
 	password := "password"
 	passwordHash := "$2a$10$KIKrid5AyyXHKHXRt.zS7OrlYWqYv2FUJOXVOktCotczFKRhmVBW."
-
 	expected := db.UserModel{
 		InnerUser: db.InnerUser{
-			ID:           id,
+			ID:           "test_user_id",
 			CreatedAt:    time.Now(),
-			Name:         username,
+			Name:         "Test User",
 			Email:        "test@username.com",
 			PasswordHash: passwordHash,
 		},
 	}
 
-	// start the expectation
+	// Add expected query to mock database
 	mock.User.Expect(
-		// define your exact query as in your tested function
-		// call it with the exact arguments which you expect the function to be called with
-		// you can copy and paste this from your tested function, and just put specific values into the arguments
 		client.User.FindFirst(
-			db.User.Name.Equals(username),
+			db.User.Name.Equals("Test User"),
 		),
-	).Returns(expected) // sets the object which should be returned in the function call
+	).Returns(expected)
 
-	authenticator := auth.NewAuthenticator("asdf", time.Hour)
-	hasher := &hash.Bcrypt{}
-
-	handler := LoginUser(client, authenticator, hasher)
-
+	// Create test request parameters
+	username := "Test User"
 	params := login.NewPostLoginParams()
 	params.Body = &models.Login{
 		Password: &password,
@@ -57,104 +46,97 @@ func TestLoginUser_ShouldReturnOKIfTheUserCredentialsAreValid(t *testing.T) {
 	}
 	params.HTTPRequest = &http.Request{}
 
+	// Setup dependencies
+	authenticator := auth.NewAuthenticator("secret", "token", time.Hour)
+	hasher := &hash.Bcrypt{}
+
+	// Test
+	handler := LoginUser(client, authenticator, hasher)
 	result := handler(params)
 
+	// Check result
 	okResult, ok := result.(*login.PostLoginOK)
-
 	if !ok {
 		t.Errorf("A valid login should return a 200 status code")
 	}
-
-	if okResult.Payload.Name != username {
-		t.Errorf("Expected username %q but got %q", username, okResult.Payload.Name)
+	if okResult.Payload.Name != "Test User" {
+		t.Errorf("Expected username %q but got %q", "Test User", okResult.Payload.Name)
 	}
-
-	if okResult.Payload.ID != id {
-		t.Errorf("Expected user ID %q but got %q", id, okResult.Payload.ID)
+	if okResult.Payload.ID != "test_user_id" {
+		t.Errorf("Expected user ID %q but got %q", "test_user_id", okResult.Payload.ID)
 	}
+	auth.VerifyCookieHelper(t, authenticator, okResult.SetCookie)
 }
 
 func TestLoginUser_ShouldReturnBadRequestIfTheUserCredentialsAreNotValid(t *testing.T) {
-	// create a new mock
-	// this returns a mock prisma `client` and a `mock` object to set expectations
+	// Create a new database mock
 	client, mock, ensure := db.NewMock()
-	// defer calling ensure, which makes sure all of the expectations were met and actually called
-	// calling this makes sure that an error is returned if there was no query happening for a given expectation
-	// and makes sure that all of them succeeded
+	// At the end of the test, ensure that all of the expectations were met and actually called
 	defer ensure(t)
 
-	username := "Test User"
-	password := "passwordThatNotMatches"
+	// Prepare mock data
+	wrongPassword := "wrong_password"
 	passwordHash := "$2a$10$KIKrid5AyyXHKHXRt.zS7OrlYWqYv2FUJOXVOktCotczFKRhmVBW."
-
 	expected := db.UserModel{
 		InnerUser: db.InnerUser{
-			ID:           "user id",
+			ID:           "test_user_id",
 			CreatedAt:    time.Now(),
-			Name:         username,
+			Name:         "Test User",
 			Email:        "test@username.com",
 			PasswordHash: passwordHash,
 		},
 	}
 
-	// start the expectation
+	// Add expected query to mock database
 	mock.User.Expect(
-		// define your exact query as in your tested function
-		// call it with the exact arguments which you expect the function to be called with
-		// you can copy and paste this from your tested function, and just put specific values into the arguments
 		client.User.FindFirst(
-			db.User.Name.Equals(username),
+			db.User.Name.Equals("Test User"),
 		),
-	).Returns(expected) // sets the object which should be returned in the function call
+	).Returns(expected)
 
-	authenticator := auth.NewAuthenticator("asdf", time.Hour)
+	// Setup dependencies
+	authenticator := auth.NewAuthenticator("secret", "token", time.Hour)
 	hasher := &hash.Bcrypt{}
 
-	handler := LoginUser(client, authenticator, hasher)
-
+	// Create test request parameters
+	username := "Test User"
 	params := login.NewPostLoginParams()
 	params.Body = &models.Login{
-		Password: &password,
+		Password: &wrongPassword,
 		Username: &username,
 	}
 	params.HTTPRequest = &http.Request{}
 
+	// Test
+	handler := LoginUser(client, authenticator, hasher)
 	result := handler(params)
 
-	_, ok := result.(*login.PostLoginBadRequest)
-
-	if !ok {
+	// Check result
+	if _, ok := result.(*login.PostLoginBadRequest); !ok {
 		t.Errorf("A invalid login with wrong password should return a 400 status code")
 	}
 }
 
 func TestLoginUser_ShouldReturnBadRequestIfTheUserDoesNotExists(t *testing.T) {
-	// create a new mock
-	// this returns a mock prisma `client` and a `mock` object to set expectations
+	// Create a new database mock
 	client, mock, ensure := db.NewMock()
-	// defer calling ensure, which makes sure all of the expectations were met and actually called
-	// calling this makes sure that an error is returned if there was no query happening for a given expectation
-	// and makes sure that all of them succeeded
+	// At the end of the test, ensure that all of the expectations were met and actually called
 	defer ensure(t)
 
-	username := "Test User"
-	password := "password"
-
-	// start the expectation
+	// Add expected query to mock database
 	mock.User.Expect(
-		// define your exact query as in your tested function
-		// call it with the exact arguments which you expect the function to be called with
-		// you can copy and paste this from your tested function, and just put specific values into the arguments
 		client.User.FindFirst(
-			db.User.Name.Equals(username),
+			db.User.Name.Equals("Test User"),
 		),
-	).Errors(db.ErrNotFound) // sets the object which should be returned in the function call
+	).Errors(db.ErrNotFound)
 
-	authenticator := auth.NewAuthenticator("asdf", time.Hour)
+	// Setup dependencies
+	authenticator := auth.NewAuthenticator("secret", "token", time.Hour)
 	hasher := &hash.Bcrypt{}
 
-	handler := LoginUser(client, authenticator, hasher)
-
+	// Create test request parameters
+	username := "Test User"
+	password := "password"
 	params := login.NewPostLoginParams()
 	params.Body = &models.Login{
 		Password: &password,
@@ -162,11 +144,12 @@ func TestLoginUser_ShouldReturnBadRequestIfTheUserDoesNotExists(t *testing.T) {
 	}
 	params.HTTPRequest = &http.Request{}
 
+	// Test
+	handler := LoginUser(client, authenticator, hasher)
 	result := handler(params)
 
-	_, ok := result.(*login.PostLoginBadRequest)
-
-	if !ok {
+	// Check result
+	if _, ok := result.(*login.PostLoginBadRequest); !ok {
 		t.Errorf("A invalid login with non existing user should return a 400 status code")
 	}
 }

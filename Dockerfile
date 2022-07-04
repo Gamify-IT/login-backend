@@ -19,7 +19,7 @@ RUN go generate
 RUN go build -ldflags="-s -w" -o server .
 
 # PORT for the REST API
-ENV PORT=4000 HOST=0.0.0.0
+ENV PORT=4000 HOST=0.0.0.0 AUTH_COOKIE_NAME=token
 EXPOSE $PORT
 
 HEALTHCHECK --interval=5s --timeout=5s --start-period=10s --retries=2 CMD curl http://localhost:4000/health

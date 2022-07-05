@@ -17,3 +17,6 @@
 /.idea/httpRequests/
 /.idea/dataSources/
 /.idea/dataSources.local.xml
+
+# Docker volumes
+/data

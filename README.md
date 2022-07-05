@@ -53,7 +53,8 @@ inside the project root dir.
 ### Environment Variables
 | Variable                | Description                                                                                                                                                                              |
 |-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `PORT`                  | OPTIONAL: You can use this to change the port that the API listens to. Default: 4000                                                                                                     |
+| `AUTH_COOKIE_NAME`      | OPTIONAL: Name of the cookie containing the authentication token. Default: `token`                                                                                                       |
+| `PORT`                  | OPTIONAL: You can use this to change the port that the API listens to. Default: `4000`                                                                                                   |
 | `POSTGRES_URL`          | **REQUIRED**: Connection URL to the postgres database. As an example, see [Migrating the database](#migrating-the-database) above.                                                       |
 | `JWT_KEY`               | **REQUIRED**: We use this key to cryptographically sign the JWT token. Other backends can use this token to authenticate the user.                                                       |
 | `JWT_VALIDITY_DURATION` | **REQUIRED**: The timespan how log each JWT is valid. The user has to log in again, if the token expires. Valid time units are “ns”, “us” (or “µs”), “ms”, “s”, “m”, “h”. Example: "24h" |

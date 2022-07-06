@@ -19,4 +19,4 @@
 /.idea/dataSources.local.xml
 
 # Docker volumes
-/data
+/.volumes

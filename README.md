@@ -27,16 +27,15 @@ You can find them in the top right toolbar.
 First, you need to start a database. Select "docker-compose: database and frontend" in the dropdown menu (left of the green play button).
 Then click the play button to start the database.
 
-Initially, the database is empty. You need to create the database tables with the following command:
-```sh
-POSTGRES_URL=postgresql://postgres:super_secure_password@localhost:5432/postgres go run github.com/prisma/prisma-client-go migrate deploy
-```
+This will start the login-frontend and initialize a PostgreSQL database.
 
 Finally, to run the project, select the `go build` configuration in the dropdown menu (left of the green play button).
 Click the play button to compile and run the project.
 
 The server prints the URL where it is running to the console.
 Visit http://localhost:4000/docs to see the API documentation.
+
+To test the whole login, including the frontend, visit http://localhost
 
 ### Migrating the database
 When changes to the database are made, you can create a migration by running

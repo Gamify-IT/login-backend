@@ -24,12 +24,12 @@ Make sure you have the following installed:
 The project contains two run configurations which GoLand will automatically load.
 You can find them in the top right toolbar.
 
-First, you need to start a database. Select "run database" in the dropdown menu (left of the green play button).
+First, you need to start a database. Select "docker-compose: database and frontend" in the dropdown menu (left of the green play button).
 Then click the play button to start the database.
 
 Initially, the database is empty. You need to create the database tables with the following command:
 ```sh
-POSTGRES_URL=postgresql://postgres:password@localhost:5432/postgres go run github.com/prisma/prisma-client-go migrate deploy
+POSTGRES_URL=postgresql://postgres:super_secure_password@localhost:5432/postgres go run github.com/prisma/prisma-client-go migrate deploy
 ```
 
 Finally, to run the project, select the `go build` configuration in the dropdown menu (left of the green play button).

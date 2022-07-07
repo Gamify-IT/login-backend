@@ -44,4 +44,3 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
     ports:
       - "80:80"
-      - "443:443"

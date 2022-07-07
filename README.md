@@ -15,9 +15,10 @@ Here is how you get started when developing on the login backend.
 
 Make sure you have the following installed:
 
-- Docker / Docker desktop: https://www.docker.com/products/docker-desktop
-- Go: https://go.dev
-- GoLand: https://www.jetbrains.com/go/
+- [Go](https://go.dev) 1.16 or higher
+- [GoLand](https://www.jetbrains.com/go/) as IDE
+- [Docker](https://www.docker.com/) to run docker containers (for Linux)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) to build and run docker containers graphically (for Windows and MacOS)
 
 > When you open the project with GoLand, it should prompt you to **install the required plugins**.
 
@@ -69,3 +70,9 @@ inside the project root dir.
 | `src/handlers/handlers.go`           | Adds all our handler functions to the server                                              |
 | `src/gen/`                           | Generated files from Prisma and Swagger. Do not edit or commit generated files!           |
 | `src/gen/restapi/configure_login.go` | Configuration for the HTTP server. The only file in `src/gen/` that can be safely edited. |
+
+## Go-Swagger
+
+This Rest-API uses Go-Swagger. So the `swagger/swagger.yml` is the base of the rest api. You find documentation about the _swagger.yml_ [here](https://swagger.io/docs/specification/basic-structure/).
+
+After changes were made in the `swagger.yml` file you should run `go generate` so that the files will be generated. You can work with these generated objects.

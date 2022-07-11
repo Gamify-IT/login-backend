@@ -16,6 +16,8 @@ func TestLoginUser_ShouldReturnOKIfTheUserCredentialsAreValid(t *testing.T) {
 	client, mock, ensure := db.NewMock()
 	// At the end of the test, ensure that all of the expectations were met and actually called
 	defer ensure(t)
+	
+	const testUserName = "Test User"
 
 	// Prepare mock data
 	password := "password"
@@ -24,7 +26,7 @@ func TestLoginUser_ShouldReturnOKIfTheUserCredentialsAreValid(t *testing.T) {
 		InnerUser: db.InnerUser{
 			ID:           "test_user_id",
 			CreatedAt:    time.Now(),
-			Name:         "Test User",
+			Name:         testUserName,
 			Email:        "test@username.com",
 			PasswordHash: passwordHash,
 		},
@@ -33,12 +35,12 @@ func TestLoginUser_ShouldReturnOKIfTheUserCredentialsAreValid(t *testing.T) {
 	// Add expected query to mock database
 	mock.User.Expect(
 		client.User.FindFirst(
-			db.User.Name.Equals("Test User"),
+			db.User.Name.Equals(testUserName),
 		),
 	).Returns(expected)
 
 	// Create test request parameters
-	username := "Test User"
+	username := testUserName
 	params := login.NewPostLoginParams()
 	params.Body = &models.Login{
 		Password: &password,
@@ -59,8 +61,8 @@ func TestLoginUser_ShouldReturnOKIfTheUserCredentialsAreValid(t *testing.T) {
 	if !ok {
 		t.Errorf("A valid login should return a 200 status code")
 	}
-	if okResult.Payload.Name != "Test User" {
-		t.Errorf("Expected username %q but got %q", "Test User", okResult.Payload.Name)
+	if okResult.Payload.Name != testUserName {
+		t.Errorf("Expected username %q but got %q", testUserName, okResult.Payload.Name)
 	}
 	if okResult.Payload.ID != "test_user_id" {
 		t.Errorf("Expected user ID %q but got %q", "test_user_id", okResult.Payload.ID)
@@ -74,6 +76,8 @@ func TestLoginUser_ShouldReturnBadRequestIfTheUserCredentialsAreNotValid(t *test
 	// At the end of the test, ensure that all of the expectations were met and actually called
 	defer ensure(t)
 
+	const testUserName = "Test User"
+
 	// Prepare mock data
 	wrongPassword := "wrong_password"
 	passwordHash := "$2a$10$KIKrid5AyyXHKHXRt.zS7OrlYWqYv2FUJOXVOktCotczFKRhmVBW."
@@ -81,7 +85,7 @@ func TestLoginUser_ShouldReturnBadRequestIfTheUserCredentialsAreNotValid(t *test
 		InnerUser: db.InnerUser{
 			ID:           "test_user_id",
 			CreatedAt:    time.Now(),
-			Name:         "Test User",
+			Name:         testUserName,
 			Email:        "test@username.com",
 			PasswordHash: passwordHash,
 		},
@@ -90,7 +94,7 @@ func TestLoginUser_ShouldReturnBadRequestIfTheUserCredentialsAreNotValid(t *test
 	// Add expected query to mock database
 	mock.User.Expect(
 		client.User.FindFirst(
-			db.User.Name.Equals("Test User"),
+			db.User.Name.Equals(testUserName),
 		),
 	).Returns(expected)
 
@@ -99,7 +103,7 @@ func TestLoginUser_ShouldReturnBadRequestIfTheUserCredentialsAreNotValid(t *test
 	hasher := &hash.Bcrypt{}
 
 	// Create test request parameters
-	username := "Test User"
+	username := testUserName
 	params := login.NewPostLoginParams()
 	params.Body = &models.Login{
 		Password: &wrongPassword,
@@ -123,10 +127,12 @@ func TestLoginUser_ShouldReturnBadRequestIfTheUserDoesNotExists(t *testing.T) {
 	// At the end of the test, ensure that all of the expectations were met and actually called
 	defer ensure(t)
 
+	const testUserName = "Test User"
+
 	// Add expected query to mock database
 	mock.User.Expect(
 		client.User.FindFirst(
-			db.User.Name.Equals("Test User"),
+			db.User.Name.Equals(testUserName),
 		),
 	).Errors(db.ErrNotFound)
 
@@ -135,7 +141,7 @@ func TestLoginUser_ShouldReturnBadRequestIfTheUserDoesNotExists(t *testing.T) {
 	hasher := &hash.Bcrypt{}
 
 	// Create test request parameters
-	username := "Test User"
+	username := testUserName
 	password := "password"
 	params := login.NewPostLoginParams()
 	params.Body = &models.Login{

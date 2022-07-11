@@ -76,6 +76,8 @@ func TestLoginUser_ShouldReturnBadRequestIfTheUserCredentialsAreNotValid(t *test
 	// At the end of the test, ensure that all of the expectations were met and actually called
 	defer ensure(t)
 
+	const testUserName = "Test User"
+
 	// Prepare mock data
 	wrongPassword := "wrong_password"
 	passwordHash := "$2a$10$KIKrid5AyyXHKHXRt.zS7OrlYWqYv2FUJOXVOktCotczFKRhmVBW."
@@ -124,6 +126,8 @@ func TestLoginUser_ShouldReturnBadRequestIfTheUserDoesNotExists(t *testing.T) {
 	client, mock, ensure := db.NewMock()
 	// At the end of the test, ensure that all of the expectations were met and actually called
 	defer ensure(t)
+
+	const testUserName = "Test User"
 
 	// Add expected query to mock database
 	mock.User.Expect(

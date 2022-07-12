@@ -36,7 +36,7 @@ func (a *Authenticator) GenerateTokenCookie(id, name string) (string, error) {
 
 	maxAge := int(a.validityDuration.Seconds())
 
-	cookie := fmt.Sprintf("%s=%s; Max-Age=%d; Secure; HttpOnly", a.cookieName, token, maxAge)
+	cookie := fmt.Sprintf("%s=%s; Max-Age=%d; HttpOnly", a.cookieName, token, maxAge)
 
 	return cookie, nil
 }

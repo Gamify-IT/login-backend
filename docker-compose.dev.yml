@@ -6,29 +6,27 @@ services:
   login-db:
     container_name: login-db
     image: postgres:14-alpine
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     volumes:
-      - ./.volumes/login-db:/var/lib/postgresql/data
+      - ./data/login-db:/var/lib/postgresql/data
     restart: always
     environment:
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=super_secure_password
 
-  #backends
-  login-backend:
-    container_name: login-backend
-    build:
-      context: ./
-    restart: always
-    expose:
-      - "80"
+  # database setup
+  login-db-setup:
+    image: ghcr.io/gamify-it/login-backend:latest
+    restart: on-failure
     depends_on:
       - login-db
+    working_dir: /app
+    volumes:
+      - .:/app:ro
+    command: go run github.com/prisma/prisma-client-go migrate deploy
     environment:
-      - PORT=80
-      - JWT_VALIDITY_DURATION=720h
-      - JWT_KEY=SecretKEY
-      - POSTGRES_URL=postgresql://postgres:super_secure_password@login-db:5432/
+      POSTGRES_URL: postgresql://postgres:super_secure_password@login-db:5432/postgres
 
   #frontends
   login-frontend:
@@ -44,6 +42,6 @@ services:
     image: nginx
     restart: always
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/dev.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
       - "80:80"

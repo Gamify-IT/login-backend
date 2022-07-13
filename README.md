@@ -5,7 +5,7 @@
 This project depends on a lot of generated code.
 When you first clone the project, you need to either follow the [Getting started](#getting-started) guide, or run `go generate`.
 Every time you change something in `swagger/swagger.yaml` or `prisma/schema.prisma`, you **must** regenerate the files for your changes to take effect.
-Do this by again using the `go generate` command or the `go build` run configuration.
+Do this by again using the `go generate` command or the `go generate and run` run configuration.
 
 ## Development
 
@@ -25,18 +25,22 @@ Make sure you have the following installed:
 The project contains two run configurations which GoLand will automatically load.
 You can find them in the top right toolbar.
 
-First, you need to start a database. Select "docker-compose: database and frontend" in the dropdown menu (left of the green play button).
+First, you need to start a database. Select "docker-compose: start dependencies" in the dropdown menu (left of the green play button).
 Then click the play button to start the database.
 
 This will start the login-frontend and initialize a PostgreSQL database.
 
-Finally, to run the project, select the `go build` configuration in the dropdown menu (left of the green play button).
+Finally, to run the project, select the `go: generate and run` configuration in the dropdown menu (left of the green play button).
 Click the play button to compile and run the project.
 
 The server prints the URL where it is running to the console.
 Visit http://localhost:4000/docs to see the API documentation.
 
 To test the whole login, including the frontend, visit http://localhost
+
+### Testing the docker build
+
+Use the "docker-compose: build backend and start with dependencies" run configuration to build the docker image and start it with all its dependencies.
 
 ### Migrating the database
 When changes to the database are made, you can create a migration by running

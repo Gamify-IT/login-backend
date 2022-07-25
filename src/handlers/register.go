@@ -10,7 +10,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// RegisterUser let a user register with username, email and password
+// RegisterUser let a user sign up with email, password and a unique username.
 func RegisterUser(client *db.PrismaClient, hasher hash.Hasher) register.PostRegisterHandlerFunc {
 	return func(params register.PostRegisterParams) middleware.Responder {
 		username := params.Body.Username

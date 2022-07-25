@@ -1,3 +1,4 @@
+// Package handlers implements the logic to handle HTTP requests.
 package handlers
 
 import (
@@ -10,7 +11,7 @@ import (
 	"time"
 )
 
-// ConfigureAPI registers all our HTTP handlers with the Swagger API server.
+// ConfigureAPI initializes our HTTP handlers and registers them with the api.
 func ConfigureAPI(api *operations.LoginAPI, dbClient *db.PrismaClient) {
 	jwtSecret := os.Getenv("JWT_KEY")
 	if jwtSecret == "" {
@@ -27,6 +28,7 @@ func ConfigureAPI(api *operations.LoginAPI, dbClient *db.PrismaClient) {
 		panic(fmt.Errorf("could parse JWT_VALIDITY_DURATION: %w", err))
 	}
 
+	// Initialize dependencies
 	generator := auth.NewAuthenticator(jwtSecret, cookieName, jwtValidityDuration)
 	hasher := &hash.Bcrypt{}
 

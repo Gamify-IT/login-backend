@@ -1,3 +1,4 @@
+// Package auth implements the logic required for user authentication using cookies.
 package auth
 
 import (
@@ -6,7 +7,18 @@ import (
 	"time"
 )
 
-func NewAuthenticator(secret string, cookieName string, validityDuration time.Duration) *Authenticator {
+// NewAuthenticator returns a new Authenticator struct with all the required fields filled in.
+//
+// The secret is a symmetric key, used to generate and verify [JSON Web Tokens]
+// The cookieName is the name of the authentication cookie.
+// The validityDuration specifies the time after which the [JSON Web Tokens] expire and the cookie is deleted.
+//
+// [JSON Web Tokens]: https://jwt.io/
+func NewAuthenticator(
+	secret string,
+	cookieName string,
+	validityDuration time.Duration,
+) *Authenticator {
 	return &Authenticator{
 		secret:           secret,
 		cookieName:       cookieName,
@@ -14,19 +26,24 @@ func NewAuthenticator(secret string, cookieName string, validityDuration time.Du
 	}
 }
 
+// Authenticator represents a security configuration including a cookieName, secret and validityDuration.
+//
+// You should create structs of this type using the [NewAuthenticator] function.
 type Authenticator struct {
 	cookieName       string
 	secret           string
 	validityDuration time.Duration
 }
 
+// CookieName returns the name of the authentication cookie.
 func (a *Authenticator) CookieName() string {
 	return a.cookieName
 }
 
-// GenerateTokenCookie returns a cookie header with a new JSON Web Token.
-// The token is valid for the configured validityDuration.
-// It contains provided the (user) id and name as payload.
+// GenerateTokenCookie returns a cookie header with a token containing the user id and corresponding display name.
+//
+// The cookie is valid for the configured validityDuration provided to [NewAuthenticator].
+// It contains provided the user id and display name as payload.
 func (a *Authenticator) GenerateTokenCookie(id, name string) (string, error) {
 	token, err := a.GenerateJWT(id, name)
 
@@ -43,7 +60,7 @@ func (a *Authenticator) GenerateTokenCookie(id, name string) (string, error) {
 
 // GenerateJWT returns a new JSON Web Token for the user.
 // The token is valid for the configured validityDuration.
-// It contains provided the (user) id and name as payload.
+// It contains provided the user id and display name as payload.
 func (a *Authenticator) GenerateJWT(id, name string) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)

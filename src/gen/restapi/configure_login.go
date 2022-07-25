@@ -37,14 +37,17 @@ func configureAPI(api *operations.LoginAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
+	// Setup database connection
 	client := db.NewClient()
 	if err := client.Prisma.Connect(); err != nil {
 		panic(fmt.Errorf("database connection: %w", err))
 	}
 
+	// Bind request handlers to API
 	handlers.ConfigureAPI(api, client)
 
 	api.PreServerShutdown = func() {
+		// Disconnect from database on process shutdown
 		if err := client.Prisma.Disconnect(); err != nil {
 			panic(err)
 		}

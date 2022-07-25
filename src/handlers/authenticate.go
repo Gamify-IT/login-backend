@@ -10,7 +10,9 @@ import (
 	"log"
 )
 
-// AuthenticateUser validates the "token" cookie and renews it.
+// AuthenticateUser validates the "token" cookie and replaces it with a new one.
+//
+// If the cookie is empty, invalid or expired, it returns the 401 (Unauthorized) HTTP status code.
 func AuthenticateUser(generator *auth.Authenticator) authenticate.PostAuthenticateHandlerFunc {
 	return func(params authenticate.PostAuthenticateParams) middleware.Responder {
 		tokenCookie, err := params.HTTPRequest.Cookie("token")

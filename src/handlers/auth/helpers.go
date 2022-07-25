@@ -5,6 +5,10 @@ import (
 	"testing"
 )
 
+// VerifyCookieHelper is a helper function used in unit tests.
+//
+// It parses the cookieValue and checks its validity using the provided auth.
+// If the cookie cannot be parsed or the validation fails, it notifies t of the error.
 func VerifyCookieHelper(t *testing.T, auth *Authenticator, cookieValue string) {
 	// Create request object that a client would receive and check cookie
 	clientRequest := &http.Request{}

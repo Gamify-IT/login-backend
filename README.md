@@ -1,5 +1,14 @@
 # Login Backend
 
+## Table of Contents
+- [Development](#development)
+  - [Getting started](#getting-started)
+  - [Testing the docker build](#testing-the-docker-build)
+  - [Migrating the database](#migrating-the-database)
+- [Environment Variables](#environment-variables)
+- [Project structure](#project-structure)
+- [Go-Swagger](#go-swagger)
+
 ## IMPORTANT
 
 This project depends on a lot of generated code.
@@ -54,7 +63,7 @@ POSTGRES_URL=postgresql://postgres:password@localhost:5432/postgres go run githu
 ```
 inside the project root dir.
 
-### Environment Variables
+## Environment Variables
 | Variable                | Description                                                                                                                                                                              |
 |-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `AUTH_COOKIE_NAME`      | OPTIONAL: Name of the cookie containing the authentication token. Default: `token`                                                                                                       |
@@ -63,7 +72,7 @@ inside the project root dir.
 | `JWT_KEY`               | **REQUIRED**: We use this key to cryptographically sign the JWT token. Other backends can use this token to authenticate the user.                                                       |
 | `JWT_VALIDITY_DURATION` | **REQUIRED**: The timespan how log each JWT is valid. The user has to log in again, if the token expires. Valid time units are “ns”, “us” (or “µs”), “ms”, “s”, “m”, “h”. Example: "24h" |
 
-### Project structure
+## Project structure
 
 | File / Directory                     | Description                                                                               |
 |--------------------------------------|-------------------------------------------------------------------------------------------|

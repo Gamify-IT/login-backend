@@ -8,7 +8,10 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 )
 
-// healthHandler defines the function for the endpoint /health
+// healthHandler checks if the service is operational.
+//
+// For now, it only checks the database connection.
+// In the future, it may also check the connection to other services it depends on.
 func healthHandler(client *db.PrismaClient) health.GetHealthHandlerFunc {
 	return health.GetHealthHandlerFunc(func(params health.GetHealthParams) middleware.Responder {
 

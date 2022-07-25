@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// LoginUser let a user log in
+// LoginUser validates the users credentials and, if they are valid, sets the authentication cookie.
 func LoginUser(client *db.PrismaClient, generator *auth.Authenticator, hash hash.Hasher) login.PostLoginHandlerFunc {
 	return func(params login.PostLoginParams) middleware.Responder {
 		username := params.Body.Username

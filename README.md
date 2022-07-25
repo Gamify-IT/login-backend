@@ -34,7 +34,7 @@ Finally, to run the project, select the `go: generate and run` configuration in 
 Click the play button to compile and run the project.
 
 The server prints the URL where it is running to the console.
-Visit http://localhost:4000/docs to see the API documentation.
+Visit http://localhost:4000/login/api/v1/docs to see the API documentation.
 
 To test the whole login, including the frontend, visit http://localhost
 
